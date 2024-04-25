@@ -1,14 +1,17 @@
 public class Main {
-    public static void main(String[] args) {
 
-        // test test
+
+    public static void main(String[] args) {
 
         boolean play;
 
         PersonManager personManager = new PersonManager();
-        Init.init(personManager);
+        PetManager petManager = new PetManager();
+        AddressManager addressManager = new AddressManager();
 
-        UI ui = new UI(personManager);
+        //Init.init(personManager,petManager, addressManager);
+
+        UI ui = new UI(personManager, petManager, addressManager);
 
         do {
             play = ui.evaluateMainMenuInput();

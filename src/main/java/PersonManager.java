@@ -1,57 +1,47 @@
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class PersonManager {
     private Map<String, Person> personList = new HashMap<>();
+
+
+    PersonDAO personDatabaseManager = new PersonDatabaseMySQL();
+
 
     private void addPerson(Person person) {
         personList.put(person.getName(), person);
 
     }
 
-    public Person createPerson( String name, String lastname) {
-        Person newPerson = new Person(name, lastname);
-        addPerson(newPerson);
-        return newPerson;
-
-
-
+    public void createPerson( String name, String lastname) {
+      personDatabaseManager.createPerson( name, lastname);
     }
-    public Person createPerson( String name, String lastname, LocalDate birthday, Gender gender) {
-        Person newPerson = new Person(name, lastname, birthday, gender);
-        addPerson(newPerson);
-        return newPerson;
-    }
-    public Person createPerson( String name, String lastname, LocalDate birthday, Gender gender, Address address) {
-        Person newPerson = new Person(name, lastname, birthday, gender, address);
-        addPerson(newPerson);
-        return newPerson;
+    public void createPerson( String name, String lastname,  String gender,LocalDate birthday) {
+        personDatabaseManager.createPerson(name, lastname, gender, birthday);
     }
 
-    public static final DateTimeFormatter birthdayFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-
-
-    public void removePerson (String deletePerson) {
-
-        personList.remove(deletePerson);
+    public void deletePerson(Person deletePerson) {
+      personDatabaseManager.deletePerson(deletePerson);
     }
 
     public void printPersonList() {
 
-        for (Person person : personList.values()) {
-            System.out.println(person);
+        List<Person> personList = personDatabaseManager.listPersons();
 
+        for (Person person : personList) {
+            System.out.println(person);
         }
     }
 
-    public Person searchPerson(String personName) {
-        Person person = personList.getOrDefault(personName, null);
-        if (person == null) {
+    public List<Person> searchPerson(String personName) {
+
+        List<Person> personList = personDatabaseManager.searchPerson(personName);
+        if (personList.isEmpty()) {
             throw new NullPointerException("Person not found");
         }
-        return person;
+        return personList;
     }
 }
 
