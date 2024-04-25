@@ -1,34 +1,43 @@
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class PersonManager {
     private Map<String, Person> personList = new HashMap<>();
+
+    DatabaseManager databaseManager = new DatabaseManager();
+
+    public static int getID() {
+       int newID =  Person.getIdCounter();
+        return newID;
+    }
 
     private void addPerson(Person person) {
         personList.put(person.getName(), person);
 
     }
 
-    public Person createPerson( String name, String lastname) {
-        Person newPerson = new Person(name, lastname);
+    public Person createPerson(int id, String name, String lastname) {
+        Person newPerson = new Person(id, name, lastname);
         addPerson(newPerson);
+
+        databaseManager.createPerson(id,name, lastname);
         return newPerson;
 
 
 
     }
-    public Person createPerson( String name, String lastname, LocalDate birthday, Gender gender) {
-        Person newPerson = new Person(name, lastname, birthday, gender);
+    public Person createPerson(int id, String name, String lastname,  String gender,LocalDate birthday) {
+        Person newPerson = new Person(id, name, lastname,gender, birthday );
         addPerson(newPerson);
+
+        databaseManager.createPerson(id, name, lastname, gender, birthday);
+
         return newPerson;
     }
-    public Person createPerson( String name, String lastname, LocalDate birthday, Gender gender, Address address) {
-        Person newPerson = new Person(name, lastname, birthday, gender, address);
-        addPerson(newPerson);
-        return newPerson;
-    }
+
 
     public static final DateTimeFormatter birthdayFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
@@ -40,9 +49,10 @@ public class PersonManager {
 
     public void printPersonList() {
 
-        for (Person person : personList.values()) {
-            System.out.println(person);
+        List<Person> personList = databaseManager.listPersons();
 
+        for (Person person : personList) {
+            System.out.println(person);
         }
     }
 

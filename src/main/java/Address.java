@@ -1,25 +1,30 @@
 public class Address {
+    private static int addressIDCounter = 9;
 
     private String street;
-    private int number;
+
+    private int housenumber;
     private int plz;
     private String place;
+    private int addressID;
 
 
-    public Address(String houseAddress, int number, int plz, String place) {
-
+    public Address(int addressID, String houseAddress, int number, int plz, String place) {
+        this.addressID= addressIDCounter++;
         this.street = houseAddress;
-        this.number = number;
+        this.housenumber = number;
         this.plz = plz;
         this.place = place;
+
     }
+    public static int getAddressID() { return addressIDCounter++;}
 
     public String getStreet() {
         return street;
     }
 
-    public int getNumber() {
-        return number;
+    public int gethousenumber() {
+        return housenumber;
     }
 
     public int getPlz() {
@@ -30,8 +35,15 @@ public class Address {
         return place;
     }
 
+
     @Override
     public String toString() {
-        return String.format("%-20s %-12d %-6d %-6s", street, number, plz, place);
+        return String.format( "%03d %-20s %-12d %-6d %-6s",addressIDCounter, street, housenumber, plz, place);
     }
-}
+
+
+
+
+
+    }
+
