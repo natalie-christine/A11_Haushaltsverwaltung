@@ -4,7 +4,6 @@ import java.util.Map;
 
 public class AddressManager {
 
-    DatabaseManager databaseManager = new DatabaseManager();
  AddressDatabaseMySQL addressDatabaseManager = new AddressDatabaseMySQL();
     private Map<String, Address> addressList = new HashMap<>();
     public void createAddress( String houseAddress, int number, int plz, String place) {
