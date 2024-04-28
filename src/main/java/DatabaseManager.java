@@ -9,19 +9,12 @@ public class DatabaseManager {
     private static final String USERNAME = "root";
     private static final String PASSWORD = "";
 
+    DatabaseQuery databaseQuery = new DatabaseQuery();
 
+    public List<Person> PeopleInHouseholdWithPets(Household selectHousehold) {
+       int householdID =  selectHousehold.getID();
+        List<Person> peopleWithPets = databaseQuery.getPeopleInHouseholdWithPets(householdID);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+        return peopleWithPets;
+    }
 }

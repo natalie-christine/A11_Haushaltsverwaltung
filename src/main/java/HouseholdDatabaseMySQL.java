@@ -2,6 +2,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -204,7 +205,59 @@ public class HouseholdDatabaseMySQL {
         }
     }
 
+    public void addPetToPerson(int householdID, int personenID) {
+        String SQL = "UPDATE pets SET personenID = ? WHERE ID = ?";
+        try (Connection connection = MySQLConnector.getInstance();
+             PreparedStatement statement = connection.prepareStatement(SQL)) {
+
+            statement.setInt(1, householdID);
+            statement.setInt(2, personenID);
+            int rowsAffected = statement.executeUpdate();
+
+            if (rowsAffected > 0) {
+                System.out.println("Pet successfully added to Person.");
+            } else {
+                System.out.println("Error adding pet to person: No rows affected.");
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Error adding pet to person: " + e.getMessage());
+        }
+    }
+
+    public List<Person> getPeopleInHousehold(int householdID) {
+        List<Person> peopleInHousehold = new ArrayList<>();
+
+        String sql = "SELECT * FROM personen WHERE householdID = ?";
+
+        try (Connection connection = MySQLConnector.getInstance();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setInt(1, householdID);
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    int id = resultSet.getInt("ID");
+                    String name = resultSet.getString("Name");
+                    String lastname = resultSet.getString("Lastname");
+                    String gender = resultSet.getString("Gender");
+                    LocalDate birthday = resultSet.getDate("Birthday").toLocalDate();
+                    int householdId = resultSet.getInt("householdID");
+
+                    // Erstelle eine neue Person und füge sie der Liste hinzu
+                    Person person = new Person(id, name, lastname, gender, birthday, householdId);
+                    peopleInHousehold.add(person);
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Error getting people in household: " + e.getMessage());
+        }
+
+        return peopleInHousehold;
+    }
 }
+
+
 
 
 

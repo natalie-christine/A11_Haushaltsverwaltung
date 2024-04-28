@@ -14,6 +14,14 @@ public class Person {
         this.lastname = lastname;
     }
 
+    public Person(int id, String name, String lastname, String gender, LocalDate birthday, int householdId) {
+        this.id = id;
+        this.name = name;
+        this.lastname = lastname;
+        this.birthday = birthday;
+        this.gender = gender;
+    }
+
     public int getId() {
         return id;
     }

@@ -7,9 +7,6 @@ public class PetManager {
 
 
 
-    //   update
-
-
     PetDatabaseMySQL petDatabaseManager = new PetDatabaseMySQL();
 
     private Map<String, Pet> petList = new HashMap<>();
@@ -56,4 +53,6 @@ public class PetManager {
 
         petDatabaseManager.updatePet(id, animalSpecies, name, gender, birthday);
     }
+
+
 }

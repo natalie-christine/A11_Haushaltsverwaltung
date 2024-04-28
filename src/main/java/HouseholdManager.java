@@ -1,6 +1,6 @@
 import java.util.List;
 
-public class HouseholdManager {
+public class HouseholdManager implements HouseholdDAO{
 
     HouseholdDatabaseMySQL householdDatabaseMySQL = new HouseholdDatabaseMySQL();
 
@@ -24,33 +24,42 @@ public class HouseholdManager {
         if (householdList.isEmpty()) {
             throw new NullPointerException("Household not found");
         }
-    /*    else {
-            for (Household household : householdList) {
-                System.out.println(household);
-            }
-        }*/
         return householdList;
     }
-    
 
-    public void addHouseholdMember(Household household, Person person) {
+
+
+
+    public void addPersonToHousehold(Household household, Person person) {
         int id = household.getID();
         householdDatabaseMySQL.addPersonToHousehold(id, person.getId());
     }
 
-    public void removeHouseholdMember(Household household, Person person) {
+    public void removeFromHousehold(Household household, Person person) {
         int householdID = household.getID();
         int personID = person.getId();
         householdDatabaseMySQL.removeFromHousehold(householdID,personID);
     }
 
-    public void addHouseholdPet(Household household, Pet pet) {
+
+
+    public void addPetToHousehold(Household household, Pet pet) {
         int householdID = household.getID();
         int petID = pet.getId();
         householdDatabaseMySQL.addPetToHousehold(householdID,petID);
     }
 
-    public void removeHouseholdPet(Household household, Pet pet) {
+
+public void addPetToPerson(Household household, Person person) {
+
+    int householdID = household.getID();
+    int personenID = person.getId();
+    householdDatabaseMySQL.addPetToPerson(householdID, personenID);
+
+
+}
+
+    public void removePetFromHousehold(Household household, Pet pet) {
         int householdID = household.getID();
         int petID = pet.getId();
         householdDatabaseMySQL.removePetFromHousehold(householdID,petID);
@@ -61,4 +70,14 @@ public class HouseholdManager {
         householdDatabaseMySQL.changeHouseholdName(householdID, householdName);
     }
 
+    public List<Person> getPeopleInHousehold(Household householdToUpdate) {
+        int householdID = householdToUpdate.getID();
+       List <Person> peopleInHouseholds =  householdDatabaseMySQL.getPeopleInHousehold(householdID);
+
+        for (Person person : peopleInHouseholds) {
+            System.out.println(person);
+        }
+
+        return peopleInHouseholds;
+    }
 }

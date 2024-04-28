@@ -10,10 +10,11 @@ public class Pet {
     private LocalDate birthday;
 
     private Address address;
+    private Household householdId;
 
 
 
-    public Pet(int id,String animalSpecies,  String name, String gender, LocalDate birthday) {
+    public Pet(int id,String animalSpecies,  String name, String gender, LocalDate birthday) { // ,householdId
 
         this.id = id;
         this.animalSpecies = animalSpecies;
@@ -33,7 +34,7 @@ public class Pet {
 
     @Override
     public String toString() {
-        return String.format("%03d %10s %-12s %-6s %-6s %s",id, animalSpecies, name, gender,birthday, address);
+        return String.format("%03d %10s %-12s %-6s %-6s %s",id, animalSpecies, name, gender,birthday, householdId);
 
     }
 

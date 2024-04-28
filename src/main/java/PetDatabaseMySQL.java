@@ -146,5 +146,4 @@ public class PetDatabaseMySQL implements PetDAO {
             System.err.println("Error updating pet: " + e.getMessage());
         }
     }
-
 }

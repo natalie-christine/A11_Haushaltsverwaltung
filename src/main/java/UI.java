@@ -360,7 +360,7 @@ public class UI {
                                 break;
                             } else {
                                 Person addPersonToHousehold = searchPerson.get(userChoice - 1);
-                                householdManager.addHouseholdMember(householdToUpdate, addPersonToHousehold);
+                                householdManager.addPersonToHousehold(householdToUpdate, addPersonToHousehold);
                             }
                     }
 
@@ -383,12 +383,13 @@ public class UI {
                                     break;
                                 } else {
                                     Person removePersonFromHousehold = searchPerson2.get(userChoice4 - 1);
-                                    householdManager.removeHouseholdMember(householdToUpdate, removePersonFromHousehold);
+                                    householdManager.removeFromHousehold(householdToUpdate, removePersonFromHousehold);
                                 }
                             }
                            
                             break;
                         case 3:
+                            System.out.println("Welches Haustier möchtest du hinzufügen?");
                             System.out.println("Gebe den Namen ein:");
 
                             String petName = sc.next();
@@ -406,7 +407,11 @@ public class UI {
                                     break;
                                 } else {
                                     Pet addPetToHousehold = addingPetList.get(userChoice - 1);
-                                    householdManager.addHouseholdPet(householdToUpdate,addPetToHousehold);
+                                 //   householdManager.addPetToHousehold(householdToUpdate,addPetToHousehold);
+
+                                  householdManager.getPeopleInHousehold(householdToUpdate);
+
+                                //    householdManager.addPetToPerson(addPetToHousehold);
                                 }
                             }
 
@@ -429,7 +434,7 @@ public class UI {
                                     break;
                                 } else {
                                     Pet removingFromHousehold = removingPetList.get(userChoice - 1);
-                                    householdManager.removeHouseholdPet(householdToUpdate,removingFromHousehold);
+                                    householdManager.removePetFromHousehold(householdToUpdate,removingFromHousehold);
                                 }
                             }
 
@@ -584,13 +589,21 @@ public class UI {
                 if (householdList3.isEmpty()) {
                     System.out.println("Haushalt nicht gefunden");
                 } else {
-                    System.out.println("Welcher Haushalt soll bearbeitet werden?");
+                    System.out.println("Welcher Haushalt soll überprüft werden?");
+                    DatabaseManager databaseManager = new DatabaseManager();
                     for (int i = 0; i < householdList3.size(); i++) {
                         System.out.println((i + 1) + ". " + householdList3.get(i));
                     }
 
 
+                    int userSelectHousehold = sc.nextInt();
+                    if (userSelectHousehold == 0) {
+                        break;
+                    } else {
+                        Household householdwithPets = householdList3.get(userSelectHousehold - 1);
+                        databaseManager.PeopleInHouseholdWithPets(householdwithPets);
 
+                    }
                 }
                 break;
 
