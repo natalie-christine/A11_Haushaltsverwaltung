@@ -61,12 +61,13 @@ public class PetDatabaseMySQL implements PetDAO {
     public List<Pet> searchPet(String petName) {
         List<Pet> petList = new ArrayList<>();
 
-        String sql = "SELECT * FROM pets WHERE Name like ?";
+        String sql = "SELECT * FROM pets WHERE Name like  ? OR Species like  ?";
 
         try (Connection connection = MySQLConnector.getInstance();
              PreparedStatement statement = connection.prepareStatement(sql)) {
 
             statement.setString(1, petName);
+            statement.setString(2,petName);
 
 
             try (ResultSet resultSet = statement.executeQuery()) {
@@ -116,4 +117,34 @@ public class PetDatabaseMySQL implements PetDAO {
             System.err.println("Error deleting pet: " + e.getMessage());
         }
     }
+
+
+    public void updatePet(int id, String animalSpecies, String name, String gender, LocalDate birthday) {
+
+        String sql = "UPDATE pets SET Species = ?, Name = ?, Gender = ? , Birthday = ?  WHERE ID = ?";
+
+        try (Connection connection = MySQLConnector.getInstance();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setInt(5,id);
+            statement.setString(1, animalSpecies);
+            statement.setString(2, name);
+            statement.setString(3, gender);
+            statement.setDate(4, java.sql.Date.valueOf(birthday));
+
+
+
+            int rowsAffected = statement.executeUpdate();
+
+            if (rowsAffected > 0) {
+                System.out.println("Pet successfully updated.");
+            } else {
+                System.out.println("Error updating pet: No rows affected.");
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Error updating pet: " + e.getMessage());
+        }
+    }
+
 }

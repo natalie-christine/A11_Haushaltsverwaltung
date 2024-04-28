@@ -10,4 +10,6 @@ public interface AddressDAO  {
     public void deleteAddress(Address deleteAddress);
 
     public List<Address> searchAddress(String searchAddress);
+
+    void updateAddress(int addressID, String newStreet, int number, int newPlz, String newPlace);
 }

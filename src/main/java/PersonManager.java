@@ -4,16 +4,11 @@ import java.util.List;
 import java.util.Map;
 
 public class PersonManager {
-    private Map<String, Person> personList = new HashMap<>();
+
 
 
     PersonDAO personDatabaseManager = new PersonDatabaseMySQL();
 
-
-    private void addPerson(Person person) {
-        personList.put(person.getName(), person);
-
-    }
 
     public void createPerson( String name, String lastname) {
       personDatabaseManager.createPerson( name, lastname);
@@ -43,5 +38,9 @@ public class PersonManager {
         }
         return personList;
     }
+
+public void updatePerson ( int id, String name, String lastname,  String gender,LocalDate birthday) {
+        personDatabaseManager.updatePerson(id, name, lastname, gender, birthday);
+}
 }
 

@@ -105,5 +105,32 @@ public class AddressDatabaseMySQL implements AddressDAO {
 
         return addressList;
     }
+
+    public void updateAddress(int addressID, String newStreet, int number, int newPlz, String newPlace) {
+        String sql = "UPDATE address SET Street = ?, number = ?, PLZ = ?, PLACE = ? WHERE ID = ?";
+
+        try (Connection connection = MySQLConnector.getInstance();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setString(1, newStreet);
+            statement.setInt(2, number);
+            statement.setInt(3, newPlz);
+            statement.setString(4, newPlace);
+            statement.setInt(5,addressID);
+
+
+            int rowsAffected = statement.executeUpdate();
+
+            if (rowsAffected > 0) {
+                System.out.println("Address successfully updated.");
+            } else {
+                System.out.println("Error updating address: No rows affected.");
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Error updating address: " + e.getMessage());
+        }
+    }
+
 }
 

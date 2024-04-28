@@ -9,4 +9,5 @@ public interface PersonDAO {
     public void createPerson( String firstName, String lastName, String gender, LocalDate birthday);
     public void deletePerson(Person deletePerson);
     public List<Person> searchPerson(String personName);
+    void updatePerson(int id,String name, String lastname, String gender, LocalDate birthday);
 }

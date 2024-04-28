@@ -26,4 +26,14 @@ public class AddressManager {
     public void removeAddress (Address deleteAddress) {
        addressDatabaseManager.deleteAddress(deleteAddress);
     }
+
+
+
+    public void updateAddress(int addressID, String newStreet, int number, int newPlz, String newPlace) {
+        addressDatabaseManager.updateAddress(addressID, newStreet, number, newPlz, newPlace);
+    }
+
+
+
+
 }

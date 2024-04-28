@@ -120,10 +120,36 @@ public class PersonDatabaseMySQL implements PersonDAO {
         }
 
         if (personList.isEmpty()) {
-            throw new NullPointerException("Person not found");
+            throw new NullPointerException("Pet not found");
         }
 
         return personList;
+    }
+
+    @Override
+    public void updatePerson(int id, String name, String lastname, String gender, LocalDate birthday) {
+        String sql = "UPDATE personen SET Name = ?, Lastname = ?, Birthday = ?, Gender = ? WHERE ID = ?";
+
+        try (Connection connection = MySQLConnector.getInstance();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setString(1, name);
+            statement.setString(2, lastname);
+            statement.setDate(3, java.sql.Date.valueOf(birthday));
+            statement.setString(4, gender);
+            statement.setInt(5, id);
+
+            int rowsAffected = statement.executeUpdate();
+
+            if (rowsAffected > 0) {
+                System.out.println("Person successfully updated.");
+            } else {
+                System.out.println("Error updating person: No rows affected.");
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Error updating person: " + e.getMessage());
+        }
     }
 
 

@@ -52,4 +52,8 @@ public class PetManager {
 
 
 
+    public void updatePet(int id, String animalSpecies, String name, String gender, LocalDate birthday) {
+
+        petDatabaseManager.updatePet(id, animalSpecies, name, gender, birthday);
+    }
 }
