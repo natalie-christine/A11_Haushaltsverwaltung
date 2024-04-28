@@ -50,11 +50,11 @@ public class HouseholdManager implements HouseholdDAO{
     }
 
 
-public void addPetToPerson(Household household, Person person) {
+public void addPetToPerson(Pet pet, Person person) {
 
-    int householdID = household.getID();
+    int petID = pet.getID();
     int personenID = person.getId();
-    householdDatabaseMySQL.addPetToPerson(householdID, personenID);
+    householdDatabaseMySQL.addPetToPerson(petID, personenID);
 
 
 }
@@ -73,10 +73,6 @@ public void addPetToPerson(Household household, Person person) {
     public List<Person> getPeopleInHousehold(Household householdToUpdate) {
         int householdID = householdToUpdate.getID();
        List <Person> peopleInHouseholds =  householdDatabaseMySQL.getPeopleInHousehold(householdID);
-
-        for (Person person : peopleInHouseholds) {
-            System.out.println(person);
-        }
 
         return peopleInHouseholds;
     }

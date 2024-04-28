@@ -409,9 +409,18 @@ public class UI {
                                     Pet addPetToHousehold = addingPetList.get(userChoice - 1);
                                  //   householdManager.addPetToHousehold(householdToUpdate,addPetToHousehold);
 
-                                  householdManager.getPeopleInHousehold(householdToUpdate);
-
-                                //    householdManager.addPetToPerson(addPetToHousehold);
+                                    List<Person> peopleInHousehold =  householdManager.getPeopleInHousehold(householdToUpdate);
+                                    if (addingPetList.isEmpty()) {
+                                        System.out.println("Haustiere dürfen nicht alleine im Haushalt sein");
+                                    } else {
+                                        System.out.println("Zur welcher Person soll das Haustier zugeordnet werden?");
+                                        for (int i = 0; i < peopleInHousehold.size(); i++) {
+                                            System.out.println((i + 1) + ". " + peopleInHousehold.get(i));
+                                        }
+                                        int userChoice5 = sc.nextInt();
+                                        Person petOwner = peopleInHousehold.get(userChoice5-1);
+                                        householdManager.addPetToPerson(addPetToHousehold, petOwner);
+                                    }
                                 }
                             }
 

@@ -210,8 +210,9 @@ public class HouseholdDatabaseMySQL {
         try (Connection connection = MySQLConnector.getInstance();
              PreparedStatement statement = connection.prepareStatement(SQL)) {
 
-            statement.setInt(1, householdID);
-            statement.setInt(2, personenID);
+            statement.setInt(1, personenID);
+            statement.setInt(2, householdID);
+
             int rowsAffected = statement.executeUpdate();
 
             if (rowsAffected > 0) {
@@ -228,7 +229,7 @@ public class HouseholdDatabaseMySQL {
     public List<Person> getPeopleInHousehold(int householdID) {
         List<Person> peopleInHousehold = new ArrayList<>();
 
-        String sql = "SELECT * FROM personen WHERE householdID = ?";
+        String sql = "SELECT * FROM personen WHERE householdsID = ?";
 
         try (Connection connection = MySQLConnector.getInstance();
              PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -242,10 +243,10 @@ public class HouseholdDatabaseMySQL {
                     String lastname = resultSet.getString("Lastname");
                     String gender = resultSet.getString("Gender");
                     LocalDate birthday = resultSet.getDate("Birthday").toLocalDate();
-                    int householdId = resultSet.getInt("householdID");
+                    int householdsId = resultSet.getInt("householdsID");
 
                     // Erstelle eine neue Person und füge sie der Liste hinzu
-                    Person person = new Person(id, name, lastname, gender, birthday, householdId);
+                    Person person = new Person(id, name, lastname, gender, birthday, householdsId);
                     peopleInHousehold.add(person);
                 }
             }

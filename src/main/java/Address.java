@@ -17,22 +17,6 @@ public class Address {
 
     }
 
-    public String getStreet() {
-        return street;
-    }
-
-    public int gethousenumber() {
-        return housenumber;
-    }
-
-    public int getPlz() {
-        return plz;
-    }
-
-    public String getPlace() {
-        return place;
-    }
-
 
     @Override
     public String toString() {

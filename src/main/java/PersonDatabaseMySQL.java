@@ -24,8 +24,8 @@ public class PersonDatabaseMySQL implements PersonDAO {
                 String gender = resultSet.getString("Gender");
                 java.sql.Date sqlDate = resultSet.getDate("Birthday");
                 LocalDate birthday = (sqlDate != null) ? sqlDate.toLocalDate() : null;
-
-                Person person = new Person(id, firstName, lastName, gender, birthday);
+                Integer householdsID = resultSet.getInt("householdsID");
+                Person person = new Person(id, firstName, lastName, gender, birthday, householdsID);
                 personList.add(person);
             }
         } catch (SQLException e) {
@@ -110,7 +110,8 @@ public class PersonDatabaseMySQL implements PersonDAO {
                     String gender = resultSet.getString("Gender");
                     java.sql.Date sqlDate = resultSet.getDate("Birthday");
                     LocalDate birthday = (sqlDate != null) ? sqlDate.toLocalDate() : null;
-                    Person person = new Person(id, firstName, lastName, gender, birthday);
+                    Integer householdID = resultSet.getInt("householdsID");
+                    Person person = new Person(id, firstName, lastName, gender, birthday, householdID);
                     personList.add(person);
                 }
             }

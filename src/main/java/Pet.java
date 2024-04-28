@@ -12,10 +12,18 @@ public class Pet {
     private Address address;
     private Household householdId;
 
+private int personenID;
 
+    public Pet(int id,String animalSpecies,  String name, String gender, LocalDate birthday, int personenID) { // ,householdId
+        this.id = id;
+        this.animalSpecies = animalSpecies;
+        this.name = name;
+        this.gender = gender;
+        this.birthday = birthday;
+        this.personenID = personenID;
 
-    public Pet(int id,String animalSpecies,  String name, String gender, LocalDate birthday) { // ,householdId
-
+    }
+    public Pet(int id,String animalSpecies,  String name, String gender, LocalDate birthday) {
         this.id = id;
         this.animalSpecies = animalSpecies;
         this.name = name;
@@ -31,12 +39,14 @@ public class Pet {
 
     public int getId() { return id;
     }
-
+    public int getID() { return id;
+    }
     @Override
     public String toString() {
-        return String.format("%03d %10s %-12s %-6s %-6s %s",id, animalSpecies, name, gender,birthday, householdId);
+        return String.format("%03d %10s %-12s %-6s %-6s %d",id, animalSpecies, name, gender,birthday, personenID );
 
     }
+
 
 
 }
