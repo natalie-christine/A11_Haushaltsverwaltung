@@ -35,33 +35,38 @@ public class PersonDatabaseMySQL implements PersonDAO {
         return personList;
     }
 
-    public void createPerson( String firstName, String lastName) {
+/*    public void createPerson( Person person) {
         String sql = "INSERT INTO Personen ( Name, Lastname) VALUES ( ?, ?)";
 
         try (Connection connection = MySQLConnector.getInstance();
-             PreparedStatement statement = connection.prepareStatement(sql)) {
+             PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
-            statement.setString(1, firstName);
-            statement.setString(2, lastName);
+            statement.setString(1, person.getName());
+            statement.setString(2, person.getLastname());
 
 
             statement.executeUpdate();
+
+            ResultSet rs = statement.getGeneratedKeys();
+            rs.next();
+
             System.out.println("Person created successfully!");
+            //return rs.getInt(1);
         } catch (SQLException e) {
             System.err.println("Error creating person: " + e.getMessage());
         }
-    }
+    }*/
 
-    public void createPerson( String firstName, String lastName, String gender, LocalDate birthday) {
+    public void createPerson( Person person) {
         String sql = "INSERT INTO Personen (Name, Lastname, Gender, Birthday) VALUES (?, ?, ?, ?)";
 
         try (Connection connection = MySQLConnector.getInstance();
              PreparedStatement statement = connection.prepareStatement(sql)) {
 
-            statement.setString(1, firstName);
-            statement.setString(2, lastName);
-            statement.setString(3, String.valueOf(gender));
-            statement.setDate(4, java.sql.Date.valueOf(birthday));
+            statement.setString(1, person.getName());
+            statement.setString(2, person.getLastname());
+            statement.setString(3, person.getGender());
+            statement.setDate(4, Date.valueOf(person.getBirthday().format(birthdayFormatter)));
 
 
             statement.executeUpdate();
@@ -110,7 +115,7 @@ public class PersonDatabaseMySQL implements PersonDAO {
                     String gender = resultSet.getString("Gender");
                     java.sql.Date sqlDate = resultSet.getDate("Birthday");
                     LocalDate birthday = (sqlDate != null) ? sqlDate.toLocalDate() : null;
-                    Integer householdID = resultSet.getInt("householdsID");
+                    int householdID = resultSet.getInt("householdsID");
                     Person person = new Person(id, firstName, lastName, gender, birthday, householdID);
                     personList.add(person);
                 }
@@ -128,17 +133,17 @@ public class PersonDatabaseMySQL implements PersonDAO {
     }
 
     @Override
-    public void updatePerson(int id, String name, String lastname, String gender, LocalDate birthday) {
+    public void updatePerson(Person person) {
         String sql = "UPDATE personen SET Name = ?, Lastname = ?, Birthday = ?, Gender = ? WHERE ID = ?";
 
         try (Connection connection = MySQLConnector.getInstance();
              PreparedStatement statement = connection.prepareStatement(sql)) {
 
-            statement.setString(1, name);
-            statement.setString(2, lastname);
-            statement.setDate(3, java.sql.Date.valueOf(birthday));
-            statement.setString(4, gender);
-            statement.setInt(5, id);
+            statement.setString(1, person.getName());
+            statement.setString(2, person.getLastname());
+            statement.setDate(4, Date.valueOf(person.getBirthday().format(birthdayFormatter)));
+            statement.setString(4, person.getGender());
+            statement.setInt(5, person.getId());
 
             int rowsAffected = statement.executeUpdate();
 

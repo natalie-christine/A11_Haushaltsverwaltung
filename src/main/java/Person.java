@@ -1,3 +1,4 @@
+import java.sql.Date;
 import java.time.LocalDate;
 
 public class Person {
@@ -23,6 +24,18 @@ public class Person {
         this.birthday = birthday;
         this.gender = gender;
         this.householdID = householdId;
+    }
+
+    public Person(String name, String lastname) {
+        this.name = name;
+        this.lastname = lastname;
+    }
+
+    public Person(String name, String lastname, String gender, LocalDate birthday) {
+        this.name = name;
+        this.lastname = lastname;
+        this.birthday = birthday;
+        this.gender = gender;
     }
 
     public int getId() {
@@ -72,4 +85,7 @@ public class Person {
     }
 
 
+    public String getGender() {
+        return gender;
+    }
 }

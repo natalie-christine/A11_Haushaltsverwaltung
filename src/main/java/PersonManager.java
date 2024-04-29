@@ -11,10 +11,12 @@ public class PersonManager {
 
 
     public void createPerson( String name, String lastname) {
-      personDatabaseManager.createPerson( name, lastname);
+        Person person = new Person( name, lastname);
+        personDatabaseManager.createPerson(person);
     }
     public void createPerson( String name, String lastname,  String gender,LocalDate birthday) {
-        personDatabaseManager.createPerson(name, lastname, gender, birthday);
+        Person person = new Person(name, lastname, gender, birthday);
+        personDatabaseManager.createPerson(person);
     }
 
     public void deletePerson(Person deletePerson) {
@@ -40,7 +42,8 @@ public class PersonManager {
     }
 
 public void updatePerson ( int id, String name, String lastname,  String gender,LocalDate birthday) {
-        personDatabaseManager.updatePerson(id, name, lastname, gender, birthday);
+       Person person = new Person(id, name, lastname, gender, birthday);
+    personDatabaseManager.updatePerson(person);
 }
 }
 

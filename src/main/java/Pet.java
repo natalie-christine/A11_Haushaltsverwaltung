@@ -12,9 +12,9 @@ public class Pet {
     private Address address;
     private Household householdId;
 
-private int personenID;
+    private int personenID;
 
-    public Pet(int id,String animalSpecies,  String name, String gender, LocalDate birthday, int personenID) { // ,householdId
+    public Pet(int id, String animalSpecies, String name, String gender, LocalDate birthday, int personenID) { // ,householdId
         this.id = id;
         this.animalSpecies = animalSpecies;
         this.name = name;
@@ -23,8 +23,17 @@ private int personenID;
         this.personenID = personenID;
 
     }
-    public Pet(int id,String animalSpecies,  String name, String gender, LocalDate birthday) {
+
+    public Pet(int id, String animalSpecies, String name, String gender, LocalDate birthday) {
         this.id = id;
+        this.animalSpecies = animalSpecies;
+        this.name = name;
+        this.gender = gender;
+        this.birthday = birthday;
+
+    }
+
+    public Pet(String animalSpecies, String name, String gender, LocalDate birthday) {
         this.animalSpecies = animalSpecies;
         this.name = name;
         this.gender = gender;
@@ -37,16 +46,26 @@ private int personenID;
         return name;
     }
 
-    public int getId() { return id;
+    public int getId() {
+        return id;
     }
-    public int getID() { return id;
+
+
+    public String getSpecies() {
+        return animalSpecies;
     }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public LocalDate getBirthday() {
+        return birthday;
+    }
+
     @Override
     public String toString() {
-        return String.format("%03d %10s %-12s %-6s %-6s %d",id, animalSpecies, name, gender,birthday, personenID );
+        return String.format("%03d %10s %-12s %-6s %-6s %d", id, animalSpecies, name, gender, birthday, personenID);
 
     }
-
-
-
 }

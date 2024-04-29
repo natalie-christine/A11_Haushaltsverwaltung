@@ -6,10 +6,10 @@ public interface PetDAO {
 
     public List<Pet> listPets();
 
-    public void createPet(String animalSpecies,  String name, String gender, LocalDate birthday);
+    public void createPet(Pet pet);
     public List<Pet> searchPet(String petName);
 
     public void deletePet(Pet deletePet);
 
-    void updatePet(int id, String animalSpecies, String name, String gender, LocalDate birthday);
+    void updatePet(Pet pet);
 }

@@ -6,7 +6,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HouseholdDatabaseMySQL {
+public class HouseholdDatabaseMySQL implements HouseholdDAO {
 
 
     public void createHousehold(String householdName, int addressID) {
@@ -31,7 +31,7 @@ public class HouseholdDatabaseMySQL {
         }
     }
 
-
+    @Override
     public void addPersonToHousehold(int householdID, int personID) {
 
         String SQL = "UPDATE personen SET householdsID = ? WHERE ID = ?";
@@ -54,7 +54,158 @@ public class HouseholdDatabaseMySQL {
         }
     }
 
+    @Override
+    public void removeFromHousehold(Household household, Person person) {
+        String SQL = "UPDATE personen SET householdsID = NULL WHERE ID = ? AND householdsID = ?";
+        try (Connection connection = MySQLConnector.getInstance();
+             PreparedStatement statement = connection.prepareStatement(SQL)) {
 
+            statement.setInt(1, person.getId());
+            statement.setInt(2, household.getID());
+
+            int rowsAffected = statement.executeUpdate();
+
+            if (rowsAffected > 0) {
+                System.out.println("Person successfully removed household.");
+            } else {
+                System.out.println("Error removing person from household: No rows affected.");
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Error removing person to household: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public void addPetToHousehold(Household household, Pet pet) {
+
+    }
+
+
+    @Override
+    public void addPetToHousehold(Pet pet, Household household)  {
+        String SQL = "UPDATE pets SET householdID = ? WHERE ID = ?";
+        try (Connection connection = MySQLConnector.getInstance();
+             PreparedStatement statement = connection.prepareStatement(SQL)) {
+
+            statement.setInt(1, household.getID());
+            statement.setInt(2, pet.getId());
+            int rowsAffected = statement.executeUpdate();
+
+            if (rowsAffected > 0) {
+                System.out.println("Pet successfully added to household.");
+            } else {
+                System.out.println("Error adding pet to household: No rows affected.");
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Error adding pet to household: " + e.getMessage());
+        }
+
+
+    }
+
+    @Override
+    public void removePetFromHousehold(Household household, Pet pet) {
+        String SQL = "UPDATE pets SET householdID = NULL WHERE ID = ? AND householdID = ?";
+        try (Connection connection = MySQLConnector.getInstance();
+             PreparedStatement statement = connection.prepareStatement(SQL)) {
+
+            statement.setInt(1, pet.getId());
+            statement.setInt(2, household.getID());
+
+            int rowsAffected = statement.executeUpdate();
+
+            if (rowsAffected > 0) {
+                System.out.println("Pet successfully removed from household.");
+            } else {
+                System.out.println("Error removing pet from household: No rows affected.");
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Error removing from household: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public void changeHouseholdName(Household household, String householdName) {
+        String SQL = "UPDATE households SET name = ? WHERE ID = ?";
+        try (Connection connection = MySQLConnector.getInstance();
+             PreparedStatement statement = connection.prepareStatement(SQL)) {
+
+            statement.setString(1, household.getName());
+            statement.setInt(2, household.getID());
+
+
+            int rowsAffected = statement.executeUpdate();
+
+            if (rowsAffected > 0) {
+                System.out.println("Household successfully changed.");
+            } else {
+                System.out.println("Error updating name from household: No rows affected.");
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Error updating name from household: " + e.getMessage());
+        }
+    }
+
+
+    @Override
+    public List<Person> getPeopleInHousehold(int householdID) {
+        List<Person> peopleInHousehold = new ArrayList<>();
+
+        String sql = "SELECT * FROM personen WHERE householdsID = ?";
+
+        try (Connection connection = MySQLConnector.getInstance();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setInt(1, householdID);
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    int id = resultSet.getInt("ID");
+                    String name = resultSet.getString("Name");
+                    String lastname = resultSet.getString("Lastname");
+                    String gender = resultSet.getString("Gender");
+                    LocalDate birthday = resultSet.getDate("Birthday").toLocalDate();
+                    int householdsId = resultSet.getInt("householdsID");
+
+                    // Erstelle eine neue Person und füge sie der Liste hinzu
+                    Person person = new Person(id, name, lastname, gender, birthday, householdsId);
+                    peopleInHousehold.add(person);
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Error getting people in household: " + e.getMessage());
+        }
+
+        return peopleInHousehold;
+    }
+
+    @Override
+    public void addPetToPerson(Pet pet, Person person) {
+        String SQL = "UPDATE pets SET personenID = ? WHERE ID = ?";
+        try (Connection connection = MySQLConnector.getInstance();
+             PreparedStatement statement = connection.prepareStatement(SQL)) {
+
+            statement.setInt(1, person.getId());
+            statement.setInt(2, pet.getId());
+
+            int rowsAffected = statement.executeUpdate();
+
+            if (rowsAffected > 0) {
+                System.out.println("Pet successfully added to Person.");
+            } else {
+                System.out.println("Error adding pet to person: No rows affected.");
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Error adding pet to person: " + e.getMessage());
+        }
+    }
+
+    @Override
     public List<Household> listHouseholds() {
         List<Household> householdsList = new ArrayList<>();
 
@@ -118,144 +269,6 @@ public class HouseholdDatabaseMySQL {
         return householdList;
     }
 
-    public void removeFromHousehold(int householdID, int personID) {
-
-        String SQL = "UPDATE personen SET householdsID = NULL WHERE ID = ? AND householdsID = ?";
-        try (Connection connection = MySQLConnector.getInstance();
-             PreparedStatement statement = connection.prepareStatement(SQL)) {
-
-            statement.setInt(1, personID);
-            statement.setInt(2, householdID);
-
-            int rowsAffected = statement.executeUpdate();
-
-            if (rowsAffected > 0) {
-                System.out.println("Person successfully removed household.");
-            } else {
-                System.out.println("Error removing person from household: No rows affected.");
-            }
-
-        } catch (SQLException e) {
-            System.err.println("Error removing person to household: " + e.getMessage());
-        }
-    }
-
-    public void addPetToHousehold(int householdID, int petID) {
-
-        String SQL = "UPDATE pets SET householdID = ? WHERE ID = ?";
-        try (Connection connection = MySQLConnector.getInstance();
-             PreparedStatement statement = connection.prepareStatement(SQL)) {
-
-            statement.setInt(1, householdID);
-            statement.setInt(2, petID);
-            int rowsAffected = statement.executeUpdate();
-
-            if (rowsAffected > 0) {
-                System.out.println("Pet successfully added to household.");
-            } else {
-                System.out.println("Error adding pet to household: No rows affected.");
-            }
-
-        } catch (SQLException e) {
-            System.err.println("Error adding pet to household: " + e.getMessage());
-        }
-    }
-
-    public void removePetFromHousehold(int householdID, int petID) {
-
-        String SQL = "UPDATE pets SET householdID = NULL WHERE ID = ? AND householdID = ?";
-        try (Connection connection = MySQLConnector.getInstance();
-             PreparedStatement statement = connection.prepareStatement(SQL)) {
-
-            statement.setInt(1, petID);
-            statement.setInt(2, householdID);
-
-            int rowsAffected = statement.executeUpdate();
-
-            if (rowsAffected > 0) {
-                System.out.println("Pet successfully removed from household.");
-            } else {
-                System.out.println("Error removing pet from household: No rows affected.");
-            }
-
-        } catch (SQLException e) {
-            System.err.println("Error removing from household: " + e.getMessage());
-        }
-    }
-
-    public void changeHouseholdName(int householdID, String newhouseholdName) {
-        String SQL = "UPDATE households SET name = ? WHERE ID = ?";
-        try (Connection connection = MySQLConnector.getInstance();
-             PreparedStatement statement = connection.prepareStatement(SQL)) {
-
-            statement.setString(1, newhouseholdName);
-            statement.setInt(2, householdID);
-
-
-            int rowsAffected = statement.executeUpdate();
-
-            if (rowsAffected > 0) {
-                System.out.println("Household successfully changed.");
-            } else {
-                System.out.println("Error updating name from household: No rows affected.");
-            }
-
-        } catch (SQLException e) {
-            System.err.println("Error updating name from household: " + e.getMessage());
-        }
-    }
-
-    public void addPetToPerson(int householdID, int personenID) {
-        String SQL = "UPDATE pets SET personenID = ? WHERE ID = ?";
-        try (Connection connection = MySQLConnector.getInstance();
-             PreparedStatement statement = connection.prepareStatement(SQL)) {
-
-            statement.setInt(1, personenID);
-            statement.setInt(2, householdID);
-
-            int rowsAffected = statement.executeUpdate();
-
-            if (rowsAffected > 0) {
-                System.out.println("Pet successfully added to Person.");
-            } else {
-                System.out.println("Error adding pet to person: No rows affected.");
-            }
-
-        } catch (SQLException e) {
-            System.err.println("Error adding pet to person: " + e.getMessage());
-        }
-    }
-
-    public List<Person> getPeopleInHousehold(int householdID) {
-        List<Person> peopleInHousehold = new ArrayList<>();
-
-        String sql = "SELECT * FROM personen WHERE householdsID = ?";
-
-        try (Connection connection = MySQLConnector.getInstance();
-             PreparedStatement statement = connection.prepareStatement(sql)) {
-
-            statement.setInt(1, householdID);
-
-            try (ResultSet resultSet = statement.executeQuery()) {
-                while (resultSet.next()) {
-                    int id = resultSet.getInt("ID");
-                    String name = resultSet.getString("Name");
-                    String lastname = resultSet.getString("Lastname");
-                    String gender = resultSet.getString("Gender");
-                    LocalDate birthday = resultSet.getDate("Birthday").toLocalDate();
-                    int householdsId = resultSet.getInt("householdsID");
-
-                    // Erstelle eine neue Person und füge sie der Liste hinzu
-                    Person person = new Person(id, name, lastname, gender, birthday, householdsId);
-                    peopleInHousehold.add(person);
-                }
-            }
-        } catch (SQLException e) {
-            System.err.println("Error getting people in household: " + e.getMessage());
-        }
-
-        return peopleInHousehold;
-    }
 }
 
 

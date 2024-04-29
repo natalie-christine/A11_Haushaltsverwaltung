@@ -8,13 +8,13 @@ public class PetManager {
 
 
     PetDatabaseMySQL petDatabaseManager = new PetDatabaseMySQL();
-
     private Map<String, Pet> petList = new HashMap<>();
 
 
 
     public void createPet(String animalSpecies,  String name, String gender, LocalDate birthday) {
-        petDatabaseManager.createPet( animalSpecies,name, gender,birthday);
+       Pet pet = new Pet(animalSpecies,name, gender,birthday);
+       petDatabaseManager.createPet(pet);
     }
     private void addPet(Pet pet) {
         petList.put(pet.getName(), pet);
@@ -50,8 +50,9 @@ public class PetManager {
 
 
     public void updatePet(int id, String animalSpecies, String name, String gender, LocalDate birthday) {
+        Pet pet = new Pet(id, animalSpecies, name, gender, birthday);
 
-        petDatabaseManager.updatePet(id, animalSpecies, name, gender, birthday);
+        petDatabaseManager.updatePet(pet) ;
     }
 
 

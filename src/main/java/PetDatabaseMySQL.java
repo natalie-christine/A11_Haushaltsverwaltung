@@ -38,6 +38,11 @@ public class PetDatabaseMySQL implements PetDAO {
         return petList;
     }
 
+    @Override
+    public void createPet(Pet pet) {
+
+    }
+
     public void createPet(String animalSpecies,  String name, String gender, LocalDate birthday) {
         String sql = " INSERT INTO pets( Species, Name, Gender, Birthday )VALUES (?, ?, ?, ?)";
 
@@ -118,19 +123,18 @@ public class PetDatabaseMySQL implements PetDAO {
         }
     }
 
-
-    public void updatePet(int id, String animalSpecies, String name, String gender, LocalDate birthday) {
-
+    @Override
+    public void updatePet(Pet pet) {
         String sql = "UPDATE pets SET Species = ?, Name = ?, Gender = ? , Birthday = ?  WHERE ID = ?";
 
         try (Connection connection = MySQLConnector.getInstance();
              PreparedStatement statement = connection.prepareStatement(sql)) {
 
-            statement.setInt(5,id);
-            statement.setString(1, animalSpecies);
-            statement.setString(2, name);
-            statement.setString(3, gender);
-            statement.setDate(4, java.sql.Date.valueOf(birthday));
+            statement.setInt(5,pet.getId());
+            statement.setString(1, pet.getSpecies());
+            statement.setString(2, pet.getName());
+            statement.setString(3, pet.getGender());
+            statement.setDate(4, Date.valueOf(pet.getBirthday().format(PersonDatabaseMySQL.birthdayFormatter)));
 
 
 
@@ -145,5 +149,7 @@ public class PetDatabaseMySQL implements PetDAO {
         } catch (SQLException e) {
             System.err.println("Error updating pet: " + e.getMessage());
         }
+
     }
+
 }

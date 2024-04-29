@@ -1,8 +1,8 @@
 import java.util.List;
 
-public class HouseholdManager implements HouseholdDAO{
+public class HouseholdManager{
 
-    HouseholdDatabaseMySQL householdDatabaseMySQL = new HouseholdDatabaseMySQL();
+    HouseholdDAO householdDatabaseMySQL = new HouseholdDatabaseMySQL();
 
 
     public void createHousehold(String householdName, int addressToHousehold) {
@@ -38,36 +38,39 @@ public class HouseholdManager implements HouseholdDAO{
     public void removeFromHousehold(Household household, Person person) {
         int householdID = household.getID();
         int personID = person.getId();
-        householdDatabaseMySQL.removeFromHousehold(householdID,personID);
+     //   householdDatabaseMySQL.removeFromHousehold(householdID,personID);
+        householdDatabaseMySQL.removeFromHousehold(household,person);
     }
 
 
 
     public void addPetToHousehold(Household household, Pet pet) {
-        int householdID = household.getID();
+      /*  int householdID = household.getID();
         int petID = pet.getId();
-        householdDatabaseMySQL.addPetToHousehold(householdID,petID);
+        householdDatabaseMySQL.addPetToHousehold(householdID,petID);*/
+        householdDatabaseMySQL.addPetToHousehold(household,pet);
     }
 
 
 public void addPetToPerson(Pet pet, Person person) {
-
-    int petID = pet.getID();
+  /*  int petID = pet.getID();
     int personenID = person.getId();
-    householdDatabaseMySQL.addPetToPerson(petID, personenID);
+    householdDatabaseMySQL.addPetToPerson(petID, personenID);*/
+    householdDatabaseMySQL.addPetToPerson(pet, person);
 
 
 }
 
     public void removePetFromHousehold(Household household, Pet pet) {
-        int householdID = household.getID();
+        /*int householdID = household.getID();
         int petID = pet.getId();
-        householdDatabaseMySQL.removePetFromHousehold(householdID,petID);
+        householdDatabaseMySQL.removePetFromHousehold(householdID,petID);*/
+        householdDatabaseMySQL.removePetFromHousehold(household,pet);
     }
 
     public void changeHouseholdName(Household household, String householdName) {
-        int householdID = household.getID();
-        householdDatabaseMySQL.changeHouseholdName(householdID, householdName);
+       // int householdID = household.getID();
+        householdDatabaseMySQL.changeHouseholdName(household, householdName);
     }
 
     public List<Person> getPeopleInHousehold(Household householdToUpdate) {
